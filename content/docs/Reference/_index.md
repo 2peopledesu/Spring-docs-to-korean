@@ -6,6 +6,7 @@ sidebar:
 ---
 
 {{< cards >}}
-  {{< card url="Developing-Your-First-Spring-Boot-Application" title="Developing Your First  Spring Boot Application" icon="adjustments-vertical" >}}
-  {{< card url="Developing-with-Spring-Boot" title="Developing with Spring Boot" icon="adjustments-vertical" >}}
+  {{< card url="../tutorials/developing-your-first-spring-boot-application" title="Developing Your First  Spring Boot Application" icon="adjustments-vertical" >}}
+  {{< card url="developing-with-spring-boot" title="Developing with Spring Boot" icon="adjustments-vertical" >}}
 {{< /cards >}}
+

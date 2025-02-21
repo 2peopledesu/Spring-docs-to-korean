@@ -69,3 +69,6 @@ features:
 
 custom_css:
   - assets/css/custom.css
+
+favicon:
+  - /static/favicon.ico

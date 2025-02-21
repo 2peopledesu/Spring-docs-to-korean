@@ -394,5 +394,5 @@ $ java -jar build/libs/myproject-0.0.1-SNAPSHOT.jar
 
 {{< cards >}}
   {{< card url="tutorials" title="tutorials" icon="document-duplicate" >}}
-  {{< card url="Reference" title="Reference" icon="adjustments-vertical" >}}
+  {{< card url="../../reference" title="Reference" icon="adjustments-vertical" >}}
 {{< /cards >}}
