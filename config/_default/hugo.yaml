@@ -97,3 +97,7 @@ sitemap:
   _merge: deep
 minify:
   _merge: deep
+
+services:
+  googleAnalytics:
+    id: G-75913D88BE
