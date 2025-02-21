@@ -1,7 +1,50 @@
+:root {
+    --hljs-bg: #eee;
+    --blockquote-background: #b1d1f126;
+}
+
 p > code {
-    background: #eee;
-    color: #000;
+    background: var(--hljs-bg);
+    color: rgba(177, 209, 241, .15); /* #000; */
     padding: 0.1rem 0.2rem;
+}
+
+.dark p > code {
+    --hljs-bg: #2c2c2c;
+    background: var(--hljs-bg);
+    color: #BBBCBE;
+    border: 1px solid #404040;
+}
+
+blockquote {
+    font-style: normal !important;
+    border-left: 4px solid #ddd;
+    padding: 1.0rem 1.0rem;
+    background: var(--blockquote-background);
+    border-radius: 0.75rem;
+}
+
+.prose :where(code):not(:where([class~=not-prose],[class~=not-prose] *)),
+blockquote p > code {
+    --hljs-bg: #eee;
+    background: var(--hljs-bg) !important;
+    color: #000 !important;
+    padding: 0.1rem 0.2rem;
+    border-radius: 3px;
+}
+
+.dark .prose :where(code):not(:where([class~=not-prose],[class~=not-prose] *)),
+.dark blockquote p > code {
+    --hljs-bg: #2c2c2c;
+    background: rgba(177, 209, 241, .15) !important;
+    color: #bbbcbe !important;
+    border: 1px solid #404040;
+}
+
+.dark blockquote {
+    --blockquote-background: #272c33;
+    background: var(--blockquote-background);
+    border-left-color: #404040;
 }
 
 *::before,

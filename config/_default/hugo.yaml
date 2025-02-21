@@ -3,7 +3,7 @@
 # Hugo Documentation: https://gohugo.io/getting-started/configuration/#all-configuration-settings
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
-title: "Docs Korean translate" # Website name
+title: "Spring Docs Korean translate" # Website name
 baseURL: 'https://docs.imap143.com/' # Website URL
 
 ############################
@@ -95,9 +95,13 @@ security:
   _merge: deep
 sitemap:
   _merge: deep
+  changefreq: always
 minify:
   _merge: deep
 
 services:
   googleAnalytics:
     id: G-75913D88BE
+
+    nohup hugo server -b https://docs.imap143.com -p 2369 > hugo.log 2>&1 &
+    nohup hugo server -b https://docs.imap143.com -appendport=false  -p 2369 > hugo.log 2>&1 &

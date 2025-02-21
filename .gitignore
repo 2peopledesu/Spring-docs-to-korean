@@ -10,6 +10,7 @@
 /assets/jsconfig.json
 hugo_stats.json
 hugo.log
+/static/
 
 # OS
 .DS_Store
