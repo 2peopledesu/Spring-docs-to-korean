@@ -1,6 +1,6 @@
 ---
 title: Spring Beans and Dependency Injection
-date: 2024-02-21
+date: 2025-02-21
 weight: 6
 ---
 

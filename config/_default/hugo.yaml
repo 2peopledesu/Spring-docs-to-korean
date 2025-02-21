@@ -102,6 +102,3 @@ minify:
 services:
   googleAnalytics:
     id: G-75913D88BE
-
-    nohup hugo server -b https://docs.imap143.com -p 2369 > hugo.log 2>&1 &
-    nohup hugo server -b https://docs.imap143.com -appendport=false  -p 2369 > hugo.log 2>&1 &
