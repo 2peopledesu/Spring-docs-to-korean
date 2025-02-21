@@ -22,9 +22,9 @@ sidebar:
     weight: 3
   - identifier: Blog
     name: "Blog ↗"
-    url: "https:/imap143.com/"
+    url: "https://imap143.com/"
     weight: 4
   - identifier: Resume
     name: "Resume ↗"
-    url: "https:/resume.imap143.com/"
+    url: "https://resume.imap143.com/"
     weight: 5
