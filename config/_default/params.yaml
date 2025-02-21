@@ -53,7 +53,7 @@ features:
   privacy_pack:
     enable: false
   repository:
-    url: 'https://github.com/2peopledesu/docs-to-korean/'
+    url: 'https://github.com/2peopledesu/Spring-docs-to-korean/'
     branch: 'main'
   feedback:
     responses:

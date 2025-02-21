@@ -11,7 +11,7 @@ Spring의 레퍼런스 문서를 한국어로 번역한 사이트입니다.
 영어에 미숙하여 오역이 있을 수 있습니다. 오역 발견 시 아래 방법으로 제보해주시면 감사하겠습니다.
 
 
-- [GitHub Issue](https://github.com/2peopledesu/docs-to-korean/issues)
+- [GitHub Issue](https://github.com/2peopledesu/Sping-docs-to-korean/issues)
 - [이메일](mailto:2peopledesu@gmail.com)
 
 ## License

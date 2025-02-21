@@ -16,7 +16,7 @@ sections:
         오역 발견 시 아래 방법으로 제보해주시면 감사하겠습니다. <br/><br/>
         
         
-        - <a href="https://github.com/2peopledesu/docs-to-korean" style="color: #0066cc;">GitHub Issue</a>
+        - <a href="https://github.com/2peopledesu/Spring-docs-to-korean" style="color: #0066cc;">GitHub Issue</a>
         - <a href="mailto:2peopledesu@gmail.com" style="color: #0066cc;">이메일</a>
         </div>
     design:
