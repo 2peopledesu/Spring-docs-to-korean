@@ -391,3 +391,8 @@ $ java -jar build/libs/myproject-0.0.1-SNAPSHOT.jar
 ```
 
 이전과 마찬가지로 애플리케이션을 종료하려면 `ctrl-c`를 누르세요.
+
+{{< cards >}}
+  {{< card url="tutorials" title="tutorials" icon="document-duplicate" >}}
+  {{< card url="Reference" title="Reference" icon="adjustments-vertical" >}}
+{{< /cards >}}

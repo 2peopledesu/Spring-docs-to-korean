@@ -16,5 +16,5 @@ Spring Boot를 사용하여 java -jar 명령어로 시작할 수 있는 Java 애
 - 코드 생성을 전혀 하지 않으며(native Image를 목표로 하지 않는 경우) XML 구성을 요구하지 않습니다.
 
 {{< cards >}}
-  {{< card url="../Tutorials/project-structure" title="Developing Your First Spring Boot Application" icon="document-duplicate" >}}
+  {{< card url="../Tutorials/Developing-Your-First-Spring-Boot-Application" title="Developing Your First Spring Boot Application" icon="document-duplicate" >}}
 {{< /cards >}}

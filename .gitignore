@@ -1,7 +1,27 @@
 # IDEs
 .idea/
+.vscode/
+*.swp
+*.swo
 
 # Hugo
-resources/
-public/
-jsconfig.json
+/public/
+/resources/_gen/
+/assets/jsconfig.json
+hugo_stats.json
+hugo.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+package-lock.json
+
+# Local Netlify folder
+.netlify
+
+# Environment variables
+.env
+.env.*
