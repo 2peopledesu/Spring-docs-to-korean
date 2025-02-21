@@ -1,16 +1,9 @@
 ---
 linkTitle: Documentation
 title: Introduction
+date: 2024-02-21
 ---
 
-👋 Welcome to the demo of the Hugo Blox Documentation template!
+본 페이지는 Spring boot의 공식 Reference Documentation을 한국어로 번역한 페이지입니다.
 
-<!--more-->
-
-This site is a demo of the Hugo Blox Documentation theme. For the full documentation on how to use this template, refer to the [Hugo Blox Documentation](https://docs.hugoblox.com/).
-
-## Next
-
-{{< cards >}}
-  {{< card url="getting-started" title="Get Started" icon="document-text" subtitle="Create your docs in just 5 minutes!" >}}
-{{< /cards >}}
+원본은 [DOCS](https://docs.spring.io/spring-boot/index.html)에 방문하셔서 읽으실 수 있습니다.

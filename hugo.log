@@ -1,0 +1,186 @@
+nohup: ignoring input
+Watching for changes in /home/opc/docs/docs-to-korean/{assets,content,hugo-blox,static}
+Watching for changes in /root/.cache/hugo_cache/modules/filecache/modules/pkg/mod/github.com/!hugo!blox/hugo-blox-builder/modules/{blox-plugin-netlify@v1.1.2-0.20250212230654-6dc78be62296,blox-tailwind@v0.3.2}
+Watching for config changes in /home/opc/docs/docs-to-korean/config/_default, /root/.cache/hugo_cache/modules/filecache/modules/pkg/mod/github.com/!hugo!blox/hugo-blox-builder/modules/blox-plugin-netlify@v1.1.2-0.20250212230654-6dc78be62296/config.yaml, /root/.cache/hugo_cache/modules/filecache/modules/pkg/mod/github.com/!hugo!blox/hugo-blox-builder/modules/blox-tailwind@v0.3.2/hugo.yaml, /home/opc/docs/docs-to-korean/go.mod
+Start building sites … 
+hugo v0.144.2-098c68fd18f48031a7145bedab30cbaede48858f+extended linux/arm64 BuildDate=2025-02-19T12:17:04Z VendorInfo=gohugoio
+
+
+                   | EN  
+-------------------+-----
+  Pages            | 21  
+  Paginator pages  |  0  
+  Non-page files   |  0  
+  Static files     |  1  
+  Processed images |  4  
+  Aliases          |  0  
+  Cleaned          |  0  
+
+Built in 190 ms
+Environment: "development"
+Serving pages from disk
+Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1) 
+Press Ctrl+C to stop
+
+Change detected, rebuilding site (#1).
+2025-02-21 02:46:18.417 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 28 ms
+
+Change detected, rebuilding site (#2).
+2025-02-21 02:48:24.417 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 27 ms
+
+Change detected, rebuilding site (#3).
+2025-02-21 02:48:47.916 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 26 ms
+
+Change detected, rebuilding site (#4).
+2025-02-21 02:49:05.416 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 27 ms
+
+Change detected, rebuilding site (#5).
+2025-02-21 02:49:14.917 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 27 ms
+
+Change detected, rebuilding site (#6).
+2025-02-21 02:49:20.917 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 27 ms
+
+Change detected, rebuilding site (#7).
+2025-02-21 02:53:04.917 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 27 ms
+
+Change detected, rebuilding site (#8).
+2025-02-21 02:53:07.417 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 27 ms
+
+Change detected, rebuilding site (#9).
+2025-02-21 02:54:11.917 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 28 ms
+
+Change detected, rebuilding site (#10).
+2025-02-21 03:04:36.917 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 29 ms
+
+Change detected, rebuilding site (#11).
+2025-02-21 03:04:59.417 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 27 ms
+
+Change detected, rebuilding site (#12).
+2025-02-21 03:05:09.917 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 27 ms
+
+Change detected, rebuilding site (#13).
+2025-02-21 03:05:10.917 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 26 ms
+
+Change detected, rebuilding site (#14).
+2025-02-21 03:05:17.917 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 26 ms
+adding created directory to watchlist /home/opc/docs/docs-to-korean/assets/css
+
+Change detected, rebuilding site (#15).
+2025-02-21 03:08:12.416 +0000
+Asset changed /css
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 28 ms
+
+Change detected, rebuilding site (#16).
+2025-02-21 03:08:24.916 +0000
+Asset changed /css/custom.css
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 28 ms
+
+Change detected, rebuilding site (#17).
+2025-02-21 03:08:30.416 +0000
+Asset changed /css/custom.css
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 26 ms
+
+Change of config file detected, rebuilding site (#18).
+2025-02-21 03:09:53.916 +0000
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Rebuilt in 282 ms
+
+Change detected, rebuilding site (#19).
+2025-02-21 03:11:18.917 +0000
+Asset changed /css/custom.css
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 30 ms
+
+Change detected, rebuilding site (#20).
+2025-02-21 03:11:20.416 +0000
+Asset changed /css/custom.css
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 30 ms
+
+Change detected, rebuilding site (#21).
+2025-02-21 03:11:31.917 +0000
+Asset changed /css/custom.css
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 29 ms
+
+Change detected, rebuilding site (#22).
+2025-02-21 03:11:48.417 +0000
+Asset changed /css/custom.css
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 29 ms
+
+Change detected, rebuilding site (#23).
+2025-02-21 03:12:05.417 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 66 ms
+
+Change detected, rebuilding site (#24).
+2025-02-21 03:12:24.917 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 64 ms
+
+Change detected, rebuilding site (#25).
+2025-02-21 03:13:50.917 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 66 ms
+
+Change detected, rebuilding site (#26).
+2025-02-21 03:14:47.417 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 68 ms
+
+Change detected, rebuilding site (#27).
+2025-02-21 03:15:39.417 +0000
+Source changed /docs/tutorials/developing-your-first-spring-boot-application.md
+Web Server is available at https://docs.imap143.com:2369/ (bind address 127.0.0.1)
+Total in 65 ms

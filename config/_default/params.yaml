@@ -11,13 +11,13 @@ appearance:
 # SEO
 marketing:
   seo:
-    site_type: Project
-    local_business_type: ''
-    org_name: ''
-    description: 'A highly-customizable Hugo documentation theme powered by Hugo Blox website builder.'
-    twitter: 'GetResearchDev'
+    site_type: Documentation
+    local_business_type: 'Education'
+    org_name: 'Spring Boot Korean Documentation'
+    description: '스프링 부트(Spring Boot) 공식 레퍼런스 문서의 한국어 번역본입니다.'
+    twitter: '2peopledesu'
   analytics:
-    google_analytics: ''
+    google_analytics: 'G-75913D88BE'
     google_tag_manager: ''
     microsoft_clarity: ''
     baidu_tongji: ''
@@ -36,25 +36,10 @@ header:
     align: "center"
     fixed_to_top: true
     logo:
-      text: ""
+      text: "2peopledesu"
       # Logo filename in `assets/media/` folder
-      filename: "logo.svg"
-    button:
-      enable: true
-      text: "Get Started"
-      url: "https://hugoblox.com/templates/details/docs/"
     show_search: true
     show_theme_chooser: true
-
-# Site footer
-footer:
-  copyright:
-    notice: '© {year} My Company. This work is licensed under {license}'
-    license:
-      enable: true
-      allow_derivatives: false
-      share_alike: true
-      allow_commercial: false
 
 # Localization
 locale:
@@ -68,8 +53,7 @@ features:
   privacy_pack:
     enable: false
   repository:
-    url: 'https://github.com/HugoBlox/hugo-blox-builder/'
-    content_dir: 'starters/documentation/content'
+    url: 'https://github.com/2peopledesu/docs-to-korean/'
     branch: 'main'
   feedback:
     responses:
@@ -82,3 +66,6 @@ features:
       repo_id: ''
       category: ''
       category_id: ''
+
+custom_css:
+  - assets/css/custom.css

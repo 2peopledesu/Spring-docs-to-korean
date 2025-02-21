@@ -2,33 +2,29 @@
 #   The weight parameter defines the order that the links will appear in.
 
 main:
-  - name: Home
-    url: /
-    weight: 10
   - name: Documentation
     url: docs/
-    weight: 20
-  - name: Blog
-    url: blog/
     weight: 30
-  - name: Showcase
-    url: showcase/
-    weight: 40
-  - name: Community
-    url: community/
-    weight: 50
 
 sidebar:
   - identifier: more
-    name: Still need help?
+    name: About me
     params:
       type: separator
     weight: 1
-  - identifier: community
-    name: "Community"
-    pageRef: "/community"
+  - identifier: Github
+    name: "Github ↗"
+    url: "https://github.com/2peopledesu/"
     weight: 2
-  - identifier: hugoDocs
-    name: "Hugo Docs ↗"
-    url: "https://docs.hugoblox.com"
+  - identifier: linkedin
+    name: "linkedin ↗"
+    url: "https://www.linkedin.com/in/myungyong-lee-a638b8157/"
     weight: 3
+  - identifier: Blog
+    name: "Blog ↗"
+    url: "https:/imap143.com/"
+    weight: 4
+  - identifier: Resume
+    name: "Resume ↗"
+    url: "https:/resume.imap143.com/"
+    weight: 5
