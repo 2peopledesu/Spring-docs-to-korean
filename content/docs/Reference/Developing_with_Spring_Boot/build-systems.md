@@ -169,3 +169,8 @@ Spring Boot는 특정 기술적 측면을 제외하거나 교환하고 싶을 �
 기술적 측면을 교환하는 방법을 배우려면 웹 서버 및 로깅 시스템 교환에 대한 설명서를 참조하십시오.
 
 > 💡 공식 스타터 목록에 대한 자세한 내용은 [GitHub](https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-starters/README.adoc)의 `spring-boot-starters` 모듈에서 확인할 수 있습니다.
+
+{{< cards >}}
+  {{< card url="../" title="Developing with Spring Boot" icon="adjustments-vertical" >}}
+  {{< card url="../structuring-your-code" title="Structuring Your Code" icon="adjustments-vertical" >}}
+{{< /cards >}}
