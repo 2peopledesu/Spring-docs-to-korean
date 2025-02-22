@@ -2,7 +2,7 @@
 title: Tutorials
 weight: 2
 sidebar:
-  open: true
+  open: false
 ---
 
 이 섹션에서는 Spring Boot 사용을 시작하는 데 도움이 되는 튜토리얼을 제공합니다.
