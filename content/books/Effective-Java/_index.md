@@ -5,4 +5,4 @@ sidebar:
   open: true
 ---
 
-이 섹션에서는 Spring Boot의 기능과 capabilities 사용에 대한 정보를 제공합니다.
+Effective Java를 읽고 이해를 위한 코드를 함께 첨부합니다.
