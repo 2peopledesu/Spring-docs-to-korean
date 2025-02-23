@@ -953,3 +953,812 @@ public enum ElvisEnum {
 | 최선의 선택 | Enum Singleton |
 
 > Enum Singleton 방식은 Reflection과 Serialization 문제를 근본적으로 해결합니다.
+
+## TIEM 4: Enforce noninstantiability with a private constructor
+
+### P 19
+
+#### 유틸리티 클래스란?
+
+유틸리티 클래스는 정적 메서드와 정적 필드로만 구성된 클래스입니다. 이 클래스는 인스턴스화될 필요가 없으며, 일반적으로 여러 관련 기능을 그룹화하는 데 사용됩니다.
+
+#### 문제점
+
+유틸리티 클래스는 종종 의도치 않게 인스턴스화될 수 있습니다. 예를 들어, 기본 생성자가 제공되면 사용자가 생성자를 호출하여 인스턴스를 생성할 수 있습니다.
+
+#### 유틸리티 클래스가 필요한 상황
+
+##### 1. 기본 타입이나 배열 관련 작업을 모아둘 때
+
+```java
+// 수학 연산 유틸리티
+public class MathOperations {
+    public static int add(int a, int b) { return a + b; }
+    public static int subtract(int a, int b) { return a - b; }
+    public static int multiply(int a, int b) { return a * b; }
+}
+
+// 배열 유틸리티
+public class ArrayUtils {
+    public static void reverse(int[] array) {
+        for (int i = 0; i < array.length / 2; i++) {
+            int temp = array[i];
+            array[i] = array[array.length - 1 - i];
+            array[array.length - 1 - i] = temp;
+        }
+    }
+}
+```
+##### 2. 정적 팩토리 메서드를 모아둘 때
+
+```java
+public interface Animal {
+    void makeSound();
+}
+
+public class Animals {
+    public static Animal createDog() {
+        return new Dog();
+    }
+    
+    public static Animal createCat() {
+        return new Cat();
+    }
+}
+```
+
+#### 잘못된 유틸리티 클래스 구현
+
+##### 1. 생성자를 명시하지 않은 경우
+
+```java
+public class StringUtils {
+    // 기본 생성자가 자동으로 생성됨 (public)
+    
+    public static String reverse(String str) {
+        return new StringBuilder(str).reverse().toString();
+    }
+}
+
+// 문제점: 인스턴스화 가능
+StringUtils utils = new StringUtils(); // 컴파일 성공!
+```
+
+##### 2. abstract 클래스로 시도한 경우
+```java
+public abstract class DatabaseUtils {
+    public static void executeQuery(String sql) {
+        // 쿼리 실행 로직
+    }
+}
+
+// 문제점: 상속으로 인스턴스화 가능
+public class MyDatabaseUtils extends DatabaseUtils {
+    // 인스턴스화 가능!
+}
+```
+
+#### 올바른 유틸리티 클래스 구현
+
+##### 1. private 생성자로 인스턴스화 방지
+
+```java
+
+public class FileUtils {
+    // 인스턴스화 방지
+    private FileUtils() {
+        throw new AssertionError("이 클래스는 인스턴스화할 수 없습니다!");
+    }
+    
+    public static String readFile(String path) {
+        // 파일 읽기 로직
+        return "file contents";
+    }
+    
+    public static void writeFile(String path, String content) {
+        // 파일 쓰기 로직
+    }
+}
+
+// 사용
+FileUtils.readFile("test.txt");  // OK
+new FileUtils();  // 컴파일 에러!
+```
+
+##### 2. 상속 방지 효과
+```java
+public class MyFileUtils extends FileUtils {  // 컴파일 에러!
+    // private 생성자로 인해 상속 불가능
+}
+```
+
+#### 사용 예시
+
+```java
+// 날짜 관련 유틸리티
+public class DateUtils {
+    private DateUtils() {
+        throw new AssertionError();
+    }
+    
+    public static String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(date);
+    }
+    
+    public static Date parseDate(String dateStr) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.parse(dateStr);
+    }
+}
+
+// 사용
+String formattedDate = DateUtils.formatDate(new Date());  // 정상 동작
+Date parsedDate = DateUtils.parseDate("2024-03-19");     // 정상 동작
+```
+
+#### 장단점
+
+| 방법 | 장점 | 단점 |
+|------|------|------|
+| private 생성자 | 100% 인스턴스화 방지, 상속 차단 | 주석 필요 |
+| 추상 클래스 | 의미 전달 용도로만 사용 | 실제 방지 효과 없음 |
+| 인터페이스 정적 메서드 | 자연스러운 그룹화 | 인터페이스 수정 권한 필요 |
+
+## Item 5: Prefer dependency injection to hardwiring resources
+
+클래스가 하나 이상의 자원에 의존할 때, 정적 유틸리티 클래스나 싱글톤을 사용하는 것은 큰 실수입니다.
+(예: 맞춤법 검사기가 사전에 의존하는 경우)
+
+### 잘못된 패턴
+
+#### 1. 정적 유틸리티 클래스
+```java
+public class SpellChecker {
+    private static final Lexicon dictionary = new KoreanDictionary(); // 하드코딩된 의존성
+    
+    private SpellChecker() {} // 인스턴스화 방지
+    
+    public static boolean isValid(String word) { 
+        return dictionary.isValid(word);
+    }
+}
+```
+
+**문제점:**
+- 다른 사전(영어, 테스트용)으로 교체 불가
+- 동시성 제어 어려움
+- 테스트 시 Mock 주입 불가
+
+#### 2. 싱글톤
+```java
+public class SpellChecker {
+    private final Lexicon dictionary = new KoreanDictionary();
+    
+    private SpellChecker() {}
+    public static final SpellChecker INSTANCE = new SpellChecker();
+    
+    public boolean isValid(String word) {
+        return dictionary.isValid(word);
+    }
+}
+```
+
+**문제점:**
+- 모든 클라이언트가 동일한 사전 강제
+- 런타임 환경별 설정 변경 불가
+
+### 올바른 해결책
+
+#### 1. 의존성 주입(DI)
+```java
+public class SpellChecker {
+    private final Lexicon dictionary;
+    
+    // 생성자를 통해 의존성 주입
+    public SpellChecker(Lexicon dictionary) {
+        this.dictionary = Objects.requireNonNull(dictionary);
+    }
+    
+    public boolean isValid(String word) {
+        return dictionary.isValid(word);
+    }
+}
+
+// 사용 예시
+Lexicon testDictionary = new TestDictionary(); 
+SpellChecker checker = new SpellChecker(testDictionary); // 테스트용 사전 주입
+```
+
+#### 2. 팩토리 주입 패턴 (Java 8+ Supplier 활용)
+```java
+public class SpellChecker {
+    private final Lexicon dictionary;
+    
+    // 팩토리 주입 (동적 생성 가능)
+    public SpellChecker(Supplier<? extends Lexicon> factory) {
+        this.dictionary = factory.get();
+    }
+}
+
+// 사용 예시
+SpellChecker englishChecker = new SpellChecker(EnglishDictionary::new);
+SpellChecker scienceChecker = new SpellChecker(ScienceDictionary::new);
+```
+
+#### 3. 의존성 주입 프레임워크 활용
+```java
+// Spring 예시
+@Configuration
+public class AppConfig {
+    @Bean
+    public Lexicon koreanDictionary() {
+        return new KoreanDictionary();
+    }
+}
+
+@Service
+public class SpellChecker {
+    private final Lexicon dictionary;
+    
+    @Autowired // 스프링이 의존성 자동 주입
+    public SpellChecker(Lexicon dictionary) {
+        this.dictionary = dictionary;
+    }
+}
+```
+
+### 전통적 방식 vs 의존성 주입 비교
+
+| 기준 | 정적 유틸리티/싱글톤 | 의존성 주입 |
+|------|---------------------|------------|
+| 유연성 | 낮음 (단일 자원) | 높음 (런타임 결정) |
+| 테스트 용이성 | 어려움 (Mock 불가) | 용이 (주입 가능) |
+| 병렬 처리 | 위험 (공유 상태) | 안전 (독립 인스턴스) |
+| 확장성 | 제한적 | 무제한 (팩토리/상속 조합) |
+
+### 핵심 정리
+1. 클래스는 자신이 사용하는 자원을 직접 생성하지 말라
+2. 외부에서 필요한 자원을 주입받아 사용하라
+3. 생성자/정적 팩토리/빌더 모두 DI의 유효한 수단이다
+
+## Item 6: Avoid creating unnecessary objects
+
+불필요한 객체 생성을 피하는 것은 성능을 개선하고 메모리 사용량을 줄이는 데 도움이 됩니다. 객체를 재사용하는 것이 더 빠르고 효율적일 수 있으며, 특히 불변 객체(immutable objects)는 언제든지 안전하게 재사용할 수 있습니다.
+
+### 1. 문자열 객체 생성
+
+```java
+// 잘못된 예 - 새로운 String 인스턴스를 매번 생성
+String s1 = new String("bikini");  // DON'T DO THIS!
+
+// 올바른 예 - String 리터럴 사용
+String s2 = "bikini";  // 문자열 풀에서 재사용
+```
+
+### 2. 정적 팩토리 메서드 활용
+
+```java
+// 잘못된 예 - 생성자 사용
+Boolean aBoolean = new Boolean("true");  // Deprecated in Java 9
+
+// 올바른 예 - 정적 팩토리 메서드 사용
+Boolean bBoolean = Boolean.valueOf("true");  // 캐시된 인스턴스 재사용
+```
+
+### 3. 비싼 객체 캐싱
+
+#### 3.1 정규표현식 패턴 재사용
+```java
+// 잘못된 예 - Pattern 인스턴스를 매번 생성
+public class RomanNumerals {
+    static boolean isRomanNumeralSlow(String s) {
+        return s.matches("^(?=.)M*(C[MD]|D?C{0,3})...");  // Pattern 객체를 매번 생성
+    }
+}
+
+// 올바른 예 - Pattern 인스턴스를 캐싱하여 재사용
+public class RomanNumerals {
+    private static final Pattern ROMAN = 
+        Pattern.compile("^(?=.)M*(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})$");
+
+    static boolean isRomanNumeral(String s) {
+        return ROMAN.matcher(s).matches();  // 컴파일된 Pattern 재사용
+    }
+}
+```
+
+#### 3.2 키파생 메서드 캐싱
+```java
+// 비싼 객체를 캐시하는 예시
+public class ExpensiveObjectCache {
+    private static final Map<String, ExpensiveObject> cache = new ConcurrentHashMap<>();
+    
+    public static ExpensiveObject getInstance(String key) {
+        return cache.computeIfAbsent(key, ExpensiveObject::create);
+    }
+}
+```
+
+### 4. 어댑터 패턴의 효율적 사용
+
+```java
+// Map 인터페이스의 keySet 어댑터 예시
+public class MapAdapter {
+    private final Map<String, Integer> map = new HashMap<>();
+    private Set<String> keySet;  // keySet 뷰를 캐시
+
+    public Set<String> getKeySet() {
+        Set<String> result = keySet;
+        if (result == null) {
+            keySet = result = map.keySet();  // 동일한 Set 인스턴스 재사용
+        }
+        return result;
+    }
+}
+```
+
+### 5. 오토박싱 주의사항
+
+```java
+// 잘못된 예 - 불필요한 오토박싱
+private static long sumSlow() {
+    Long sum = 0L;  // 박싱된 기본 타입 사용
+    for (long i = 0; i <= Integer.MAX_VALUE; i++) {
+        sum += i;  // 매번 새로운 Long 인스턴스 생성
+    }
+    return sum;
+}
+
+// 올바른 예 - 기본 타입 사용
+private static long sum() {
+    long sum = 0L;  // 기본 타입 사용
+    for (long i = 0; i <= Integer.MAX_VALUE; i++) {
+        sum += i;  // 오토박싱 없음
+    }
+    return sum;
+}
+```
+
+### 6. 객체 풀링 고려사항
+
+```java
+// 데이터베이스 연결 풀 예시 - 무거운 객체에만 적용
+public class DatabaseConnectionPool {
+    private static final int MAX_POOL_SIZE = 10;
+    private final BlockingQueue<Connection> pool;
+    
+    public DatabaseConnectionPool() {
+        pool = new ArrayBlockingQueue<>(MAX_POOL_SIZE);
+        for (int i = 0; i < MAX_POOL_SIZE; i++) {
+            pool.offer(createConnection());
+        }
+    }
+    
+    public Connection getConnection() throws InterruptedException {
+        return pool.take();  // 풀에서 연결 획득
+    }
+    
+    public void releaseConnection(Connection conn) {
+        pool.offer(conn);  // 풀에 연결 반환
+    }
+}
+```
+
+### 성능 비교 예시
+
+```java
+public class ObjectCreationBenchmark {
+    public static void main(String[] args) {
+        // String 생성 성능 비교
+        long start = System.nanoTime();
+        for (int i = 0; i < 1000000; i++) {
+            String s = new String("test");  // 비효율적
+        }
+        long end = System.nanoTime();
+        System.out.println("New String time: " + (end - start));
+
+        start = System.nanoTime();
+        for (int i = 0; i < 1000000; i++) {
+            String s = "test";  // 효율적
+        }
+        end = System.nanoTime();
+        System.out.println("String literal time: " + (end - start));
+    }
+}
+```
+
+### 핵심 정리
+
+1. **재사용이 핵심**: 불변 객체는 항상 재사용할 수 있습니다.
+2. **정적 팩토리 메서드**: 객체 재사용을 보장하는 좋은 방법입니다.
+3. **비싼 객체는 캐싱**: 생성 비용이 비싼 객체는 캐싱하여 재사용합니다.
+4. **기본 타입 선호**: 불필요한 오토박싱을 피하기 위해 기본 타입을 사용합니다.
+5. **객체 풀은 신중히**: 매우 무거운 객체가 아니라면 객체 풀은 피합니다.
+
+| 상황 | 권장 방식 | 피해야 할 방식 |
+|------|-----------|---------------|
+| 문자열 생성 | String 리터럴 | new String() |
+| 불변 객체 | 정적 팩토리 메서드 | 생성자 |
+| 비싼 객체 | 캐싱 후 재사용 | 매번 새로 생성 |
+| 기본 타입 | primitive 타입 | 박싱된 기본 타입 |
+| 무거운 객체 | 객체 풀링 고려 | 매번 새로 생성 |
+
+## Item 7: Eliminate obsolete object references
+
+가비지 컬렉션(GC) 언어인 Java에서도 메모리 관리는 중요합니다. 의도치 않은 객체 보유(unintentional object retention)는 메모리 누수로 이어질 수 있으며, 성능 저하 또는 OutOfMemoryError를 초래할 수 있습니다.
+
+### 메모리 누수의 주요 원인과 해결책
+
+#### 1. 자체 메모리 관리 클래스의 메모리 누수
+
+Stack 구현의 메모리 누수 예시:
+
+```java
+public class Stack {
+    private Object[] elements;
+    private int size = 0;
+    private static final int DEFAULT_INITIAL_CAPACITY = 16;
+
+    public Stack() {
+        elements = new Object[DEFAULT_INITIAL_CAPACITY];
+    }
+
+    public void push(Object e) {
+        ensureCapacity();
+        elements[size++] = e;
+    }
+
+    // 메모리 누수가 있는 버전
+    public Object pop() {
+        if (size == 0) throw new EmptyStackException();
+        return elements[--size]; // 참조 해제를 하지 않음
+    }
+
+    // 해결책: 다 쓴 참조 해제
+    public Object popFixed() {
+        if (size == 0) throw new EmptyStackException();
+        Object result = elements[--size];
+        elements[size] = null; // 다 쓴 참조 해제
+        return result;
+    }
+
+    private void ensureCapacity() {
+        if (elements.length == size) {
+            elements = Arrays.copyOf(elements, 2 * size + 1);
+        }
+    }
+}
+```
+
+#### 2. 캐시 관련 메모리 누수
+
+```java
+// 캐시 구현의 메모리 누수 해결책
+public class Cache<K, V> {
+    // WeakHashMap을 사용하여 참조가 없는 항목 자동 제거
+    private final Map<K, V> cache = new WeakHashMap<>();
+    
+    // 또는 만료 시간 설정
+    private final Map<K, CacheEntry<V>> timedCache = new HashMap<>();
+    
+    private static class CacheEntry<V> {
+        V value;
+        long expiryTime;
+    }
+    
+    public V get(K key) {
+        cleanExpiredEntries();
+        return timedCache.get(key).value;
+    }
+    
+    private void cleanExpiredEntries() {
+        long now = System.currentTimeMillis();
+        timedCache.entrySet().removeIf(e -> e.getValue().expiryTime < now);
+    }
+}
+```
+
+#### 3. 리스너/콜백 관련 메모리 누수
+
+```java
+public class EventManager {
+    // WeakHashMap을 사용하여 콜백 참조 관리
+    private final Map<EventListener, Object> listeners = new WeakHashMap<>();
+    
+    public void addListener(EventListener listener) {
+        listeners.put(listener, new Object());
+    }
+    
+    public void removeListener(EventListener listener) {
+        listeners.remove(listener);
+    }
+}
+```
+
+### 메모리 누수 방지를 위한 가이드라인
+
+#### 1. 명시적 참조 해제가 필요한 경우
+- 자체적으로 메모리를 관리하는 클래스
+- 캐시
+- 리스너/콜백
+
+#### 2. 참조 해제 방법
+- null 처리
+- WeakHashMap 사용
+- 백그라운드 스레드를 이용한 주기적 청소
+
+#### 3. 메모리 누수 디버깅
+
+```java
+// 메모리 사용량 모니터링 예시
+public class MemoryMonitor {
+    public static void printMemoryStats() {
+        Runtime rt = Runtime.getRuntime();
+        System.out.println("Used Memory: " + 
+            (rt.totalMemory() - rt.freeMemory()) / 1024 + " KB");
+    }
+}
+```
+
+### 핵심 정리
+
+| 상황 | 해결 방법 | 주의사항 |
+|------|-----------|----------|
+| 자체 메모리 관리 | 명시적 null 처리 | 일반적인 상황에서는 불필요 |
+| 캐시 | WeakHashMap 또는 TTL | 캐시 크기 제한 고려 |
+| 리스너/콜백 | 약한 참조 사용 | 등록/해제 쌍으로 관리 |
+
+> "메모리 누수는 눈에 띄지 않게 서서히 시스템을 죽입니다. 객체 참조의 생명주기를 항상 의식해야합니다"
+
+## ITEM 8: Avoid finalizers and cleaners
+
+파이널라이저(finalizers)와 클리너(cleaners)는 예측 불가능하고 위험하며 일반적으로 불필요합니다. 이들의 사용은 불안정한 동작, 성능 저하, 이식성 문제를 초래할 수 있습니다. Java 9부터 파이널라이저는 공식적으로 deprecated되었지만 여전히 일부 라이브러리에서 사용 중입니다. 클리너가 대체 수단으로 도입되었지만 여전히 예측 불가능하고 느리며 권장되지 않습니다.
+
+C++ 개발자들은 파이널라이저/클리너를 C++의 소멸자(destructor)와 동일시하지 말아야 합니다. C++에서는 소멸자가 객체 리소스 회수의 표준 방법이지만, Java에서는 가비지 컬렉터가 자동으로 관리합니다. Java에서 비메모리 리소스 회수는 try-with-resources 또는 try-finally 블록으로 처리해야 합니다(Item 9).
+
+### 파이널라이저의 치명적 문제점
+
+#### 1. 실행 시점 보장 없음
+객체가 도달 불가능(unreachable) 상태가 된 후 실제 실행까지 시간 차이가 클 수 있습니다.
+
+```java
+public class Resource {
+    private FileInputStream fis;
+    
+    public Resource(String path) throws FileNotFoundException {
+        fis = new FileInputStream(path);
+    }
+    
+    @Override
+    protected void finalize() throws Throwable {
+        fis.close(); // 파일 핸들 누수 위험
+        super.finalize();
+    }
+}
+```
+
+#### 2. 성능 저하
+
+```java
+// 수만 개 객체 파이널라이즈 지연 사례
+public class GraphicObject {
+    private byte[] heavyResource = new byte[1024 * 1024];
+    
+    @Override
+    protected void finalize() {
+        // 장시간 실행 코드
+    }
+}
+```
+
+#### 3. 실행 보장 없음
+
+```java
+public class CriticalResource {
+    private static Lock dbLock = ...;
+    
+    @Override
+    protected void finalize() {
+        dbLock.unlock(); // 실행 안 될 경우 분산 시스템 장애
+    }
+}
+```
+
+### 클리너(Cleaner)의 한계 (Java 9+)
+
+```java
+import java.lang.ref.Cleaner;
+
+public class CleanerExample {
+    private static final Cleaner cleaner = Cleaner.create();
+    
+    private static class Resource implements Runnable {
+        private FileInputStream fis;
+        
+        Resource(String path) throws FileNotFoundException {
+            fis = new FileInputStream(path);
+        }
+        
+        @Override
+        public void run() { // 클리닝 액션
+            try {
+                fis.close();
+                System.out.println("리소스 클린!");
+            } catch (IOException e) { /* 로깅 */ }
+        }
+    }
+    
+    public static void main(String[] args) {
+        Resource res = new Resource("data.txt");
+        cleaner.register(res, res::run); // 클리너 등록
+        res = null; // 도달 불가능 상태
+        // GC 시점에 클리닝 액션 실행 (보장 없음)
+    }
+}
+```
+
+### 올바른 리소스 관리 기법
+
+```java
+// try-with-resources (Java 7+)
+public class SafeResource implements AutoCloseable {
+    private final FileInputStream fis;
+    
+    public SafeResource(String path) throws FileNotFoundException {
+        fis = new FileInputStream(path);
+    }
+    
+    @Override
+    public void close() {
+        try {
+            fis.close();
+            System.out.println("리소스 즉시 해제!");
+        } catch (IOException e) { /* 로깅 */ }
+    }
+    
+    public static void main(String[] args) {
+        try (SafeResource res = new SafeResource("data.txt")) {
+            // 리소스 사용
+        } // 자동 close() 호출 보장
+    }
+}
+```
+
+### 핵심 정리
+
+#### 절대 사용하지 말 것
+- finalize(): 100% 금지
+- Cleaner: 네이티브 리소스 관리 등 극히 제한적 상황에서만
+
+#### 대체 솔루션
+- AutoCloseable + try-with-resources
+- 명시적 close() 메서드 호출
+
+#### 예외적 허용 사례
+- 네이티브 피어(Native Peer) 리소스 관리
+- 안전망 역할(주요 리소스 누수 방지)
+
+> "파이널라이저와 클리너는 절대적인 최후의 수단입니다. 99.9%의 상황에서 try-with-resources가 정답입니다"
+
+## Item 9: Prefer try-with-resources to try-finally
+
+자바 라이브러리에는 `InputStream`, `OutputStream`, `java.sql.Connection`과 같이 직접 `close` 메서드를 호출해 수동으로 닫아야 하는 자원들이 많습니다. 자원 닫기는 클라이언트가 놓치기 쉬워 성능 문제로 이어지곤 합니다. 이런 자원들 중 상당수가 안전망으로 finalizer를 활용하지만, finalizer는 믿을 만하지 못합니다(아이템 8).
+
+### try-finally의 문제점
+
+역사적으로 `try-finally` 문은 예외 발생이나 return으로 인해 종료되는 상황에서도 자원이 제대로 닫힘을 보장하는 최선의 방법이었습니다.
+
+```java
+// try-finally - 더 이상 자원을 닫는 최선의 방법이 아니다!
+static String firstLineOfFile(String path) throws IOException {
+    BufferedReader br = new BufferedReader(new FileReader(path));
+    try {
+        return br.readLine();
+    } finally {
+        br.close();
+    }
+}
+```
+
+여러 자원을 사용할 때는 코드가 더욱 복잡해집니다:
+
+```java
+// 여러 자원을 사용할 때 try-finally는 지저분하다!
+static void copy(String src, String dst) throws IOException {
+    InputStream in = new FileInputStream(src);
+    try {
+        OutputStream out = new FileOutputStream(dst);
+        try {
+            byte[] buf = new byte[BUFFER_SIZE];
+            int n;
+            while ((n = in.read(buf)) >= 0)
+                out.write(buf, 0, n);
+        } finally {
+            out.close();
+        }
+    } finally {
+        in.close();
+    }
+}
+```
+
+### try-with-resources의 해결책
+
+Java 7에서 도입된 try-with-resources는 이러한 문제들을 해결합니다. 이 구조를 사용하려면 해당 자원이 `AutoCloseable` 인터페이스를 구현해야 합니다.
+
+```java
+// try-with-resources - 자원 닫기 최적의 방식!
+static String firstLineOfFile(String path) throws IOException {
+    try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+        return br.readLine();
+    }
+}
+```
+
+다중 자원 처리도 간단해집니다:
+
+```java
+// 다중 자원 처리 시 간결함의 극치
+static void copy(String src, String dst) throws IOException {
+    try (InputStream in = new FileInputStream(src);
+         OutputStream out = new FileOutputStream(dst)) {
+        byte[] buf = new byte[BUFFER_SIZE];
+        int n;
+        while ((n = in.read(buf)) >= 0)
+            out.write(buf, 0, n);
+    }
+}
+```
+
+catch 절도 자유롭게 사용할 수 있습니다:
+
+```java
+// catch 결합 예시: 파일 열기 실패 시 기본값 반환
+static String firstLineOfFile(String path, String defaultVal) {
+    try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+        return br.readLine();
+    } catch (IOException e) {
+        return defaultVal;
+    }
+}
+```
+
+### try-with-resources의 장점
+
+1. **간결성**: 코드가 짧고 명확해집니다
+2. **예외 처리 개선**: 
+   - 실제 발생한 예외가 명확히 표시됨
+   - 추가 예외는 suppressed로 처리되어 `Throwable.getSuppressed()`로 확인 가능
+3. **자원 관리 보장**: 자동으로 close() 호출
+
+### 커스텀 리소스 예시
+
+```java
+public class CustomResource implements AutoCloseable {
+    @Override
+    public void close() throws Exception {
+        System.out.println("리소스 정리 완료!");
+    }
+}
+
+// 사용
+try (CustomResource cr = new CustomResource()) {
+    // 리소스 사용
+} // 자동으로 close() 호출
+```
+
+### 비교 표: try-finally vs try-with-resources
+
+| 특성 | try-finally | try-with-resources |
+|------|-------------|-------------------|
+| 가독성 | 중첩 코드로 복잡함 | 깔끔한 자원 선언 |
+| 예외 처리 | 마지막 예외만 표시 | 모든 예외 보존 |
+| 자원 누수 위험 | 높음 | 낮음 |
+| 코드 길이 | 장황함 | 간결함 |
+
+### 핵심 정리
+
+- 꼭 회수해야 하는 자원을 다룰 때는 try-with-resources를 사용하라
+- 코드는 더 짧고 분명해지고, 만들어지는 예외 정보도 훨씬 유용하다
+- try-finally로는 불가능했던 예외 처리가 가능해진다
