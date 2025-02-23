@@ -51,3 +51,28 @@ blockquote p > code {
 *::after {
     content: none !important;
 }
+
+.hb-scrollbar {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - var(--navbar-height) - env(safe-area-inset-bottom));
+}
+
+.hb-scrollbar > ul {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 2rem;
+}
+
+.hb-scrollbar > div {
+    position: sticky;
+    bottom: 0;
+    background: inherit;
+    padding: 1rem 0;
+    border-top: 1px solid #e5e5e5;
+    margin-top: auto;
+}
+
+.dark .hb-scrollbar > div {
+    border-color: #404040;
+}
