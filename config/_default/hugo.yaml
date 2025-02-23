@@ -20,6 +20,22 @@ cascade:
     show_date: false
     # Show date modified at end of content
     show_date_updated: true
+  - _target:
+      path: /books
+    editable: true
+    show_breadcrumb: true
+    show_date: false
+    show_date_updated: true
+    type: docs
+    toc: true
+  - _target:
+      path: /books/**
+    editable: true
+    show_breadcrumb: true
+    show_date: false
+    show_date_updated: true
+    type: docs
+    toc: true
   # Blog post options
   - _target:
       path: /blog/**
