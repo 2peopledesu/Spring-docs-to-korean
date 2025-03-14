@@ -11,6 +11,7 @@
 hugo_stats.json
 hugo.log
 /static/
+/content/books/*
 
 # OS
 .DS_Store
